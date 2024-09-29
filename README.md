@@ -1,5 +1,10 @@
 # nestjs-start-prisma
 
+![NestJS](https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![PostgresQL](https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white)
+
 This is a starter repository for creating backend api services using NestJS and Prisma. The default database used for this repository is Postgesql and the default authentication method is JWT.
 
 These defaults can easily be replaced with your preferred database like MongoDB or using Sessions for authentication. Just remove or modify the packages or codes related to Postgres and JWT.
