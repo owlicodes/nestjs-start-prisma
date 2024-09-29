@@ -9,6 +9,13 @@ This is a starter repository for creating backend api services using NestJS and 
 
 These defaults can easily be replaced with your preferred database like MongoDB or using Sessions for authentication. Just remove or modify the packages or codes related to Postgres and JWT.
 
+## Table of Contents
+
+1. [Default Docker Compose](#default-docker-compose)
+2. [Environment Variables](#environment-variables)
+3. [Initiate Prisma](#initiate-prisma)
+4. [API Routes](#api-routes)
+
 ## Default Docker Compose
 
 The repository also contains a default docker-compose.yml file which will spin up a postgresql database and a pgadmin. You can replace this docker-compose.yml file with a different database image if you are going to use one.
@@ -53,3 +60,9 @@ To run the seed script, run the command below.
 ```bash
 npx prisma db seed
 ```
+
+## API Routes
+
+| URL            | Description                                                 |
+| -------------- | ----------------------------------------------------------- |
+| /auth/register | Register a new user by creating the record in the database. |
