@@ -6,6 +6,7 @@ import { RegisterUserDto } from "./dtos/register-user.dto";
 import { UsersService } from "src/users/users.service";
 import { LoginUserDto } from "./dtos/login-user.dto";
 import { UserPayload } from "src/shared/types";
+import { AppConfigService } from "src/config/config.service";
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly appConfigService: AppConfigService,
   ) {}
 
   async register(data: RegisterUserDto) {
@@ -35,12 +37,12 @@ export class AuthService {
 
     const payload = { sub: user.id, email: user.email };
     const accessToken = await this.jwtService.sign(payload, {
-      secret: process.env.JWT_ACCESS_SECRET,
-      expiresIn: this.ACCESS_TOKEN_EXPIRES_IN,
+      secret: this.appConfigService.getJwtAccessSecret(),
+      expiresIn: this.appConfigService.getJwtAccessExpiry(),
     });
     const refreshToken = await this.jwtService.sign(payload, {
-      secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: this.REFRESH_TOKEN_EXPIRES_IN,
+      secret: this.appConfigService.getJwtRefreshSecret(),
+      expiresIn: this.appConfigService.getJwtRefreshExpiry(),
     });
 
     return {
@@ -52,8 +54,8 @@ export class AuthService {
   async refresh(data: UserPayload) {
     const payload = { sub: data.user.sub, email: data.user.email };
     const accessToken = await this.jwtService.sign(payload, {
-      secret: process.env.JWT_ACCESS_SECRET,
-      expiresIn: this.ACCESS_TOKEN_EXPIRES_IN,
+      secret: this.appConfigService.getJwtAccessSecret(),
+      expiresIn: this.appConfigService.getJwtAccessExpiry(),
     });
 
     return {

@@ -4,9 +4,12 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import helmet from "helmet";
 
 import { AppModule } from "./app.module";
+import { AppConfigService } from "./config/config.service";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const appConfigService = app.get(AppConfigService);
 
   app.setGlobalPrefix("api");
   app.enableCors();
@@ -48,6 +51,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("docs", app, document);
 
-  await app.listen(process.env.PORT || 5000);
+  const PORT = appConfigService.getPort() || 5000;
+  await app.listen(PORT);
 }
 bootstrap();

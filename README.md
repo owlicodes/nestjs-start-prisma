@@ -30,13 +30,28 @@ docker-compose up . -d
 
 ## Environment Variables
 
-Below is an example of what your .env file should contain.
+Below is an example of what your .env file should contain. The environment variables are validated using Zod. If you want to add a new environment variable, make sure you also add the getter method in the AppConfigService to make the application consistent.
 
 ```.env
 PORT=5000
 DATABASE_URL="postgresql://admin:admin@localhost:5432/nest-db?schema=public"
 JWT_ACCESS_SECRET="jwtAccessSecret"
+JWT_ACCESS_EXPIRY="24h"
 JWT_REFRESH_SECRET="jwtRefreshSecret"
+JWT_REFRESH_EXPIRY="7d"
+```
+
+Below is the equivalent zod object schema defined in config.ts.
+
+```typescript
+export const envSchema = z.object({
+  PORT: z.coerce.number().default(5000),
+  DATABASE_URL: z.string().url(),
+  JWT_ACCESS_SECRET: z.string(),
+  JWT_ACCESS_EXPIRY: z.string(),
+  JWT_REFRESH_SECRET: z.string(),
+  JWT_REFRESH_EXPIRY: z.string(),
+});
 ```
 
 ## Initiate Prisma
