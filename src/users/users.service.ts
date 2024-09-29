@@ -9,7 +9,7 @@ export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async createUser(data: CreateUserDto) {
-    const user = await this.usersRepository.getUserByEmail(data.email);
+    const user = await this.getUserByEmail(data.email);
 
     if (user) throw new BadRequestException("User already exists.");
 
@@ -22,5 +22,9 @@ export class UsersService {
     return {
       message: "User created.",
     };
+  }
+
+  async getUserByEmail(email: string) {
+    return this.usersRepository.getUserByEmail(email);
   }
 }

@@ -32,7 +32,9 @@ Below is an example of what your .env file should contain.
 
 ```.env
 PORT=5000
-DATABASE_URL="postgresql://admin:password@localhost:5432/nest-db?schema=public"
+DATABASE_URL="postgresql://admin:admin@localhost:5432/nest-db?schema=public"
+JWT_ACCESS_SECRET="jwtAccessSecret"
+JWT_REFRESH_SECRET="jwtRefreshSecret"
 ```
 
 ## Initiate Prisma
@@ -63,6 +65,7 @@ npx prisma db seed
 
 ## API Routes
 
-| URL            | Description                                                 |
-| -------------- | ----------------------------------------------------------- |
-| /auth/register | Register a new user by creating the record in the database. |
+| URL            | Description                                                                                                                                                                |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| /auth/register | Register a new user by creating the record in the database.                                                                                                                |
+| /auth/login    | Logs in the user by returning an access token and a refresh token. By default, the access token will expire after 24 hours and the refresh token will expire after 1 week. |
