@@ -16,6 +16,7 @@ These defaults can easily be replaced with your preferred database like MongoDB 
 3. [Initiate Prisma](#initiate-prisma)
 4. [API Routes](#api-routes)
 5. [Swagger Documentation](#swagger-documentation)
+6. [Postman Collection](#postman-collection)
 
 ## Default Docker Compose
 
@@ -77,4 +78,10 @@ npx prisma db seed
 
 The repository includes the openapi swagger documentation for all the available routes, this can be a good starting point for adding more documentation whenever a new route is added. To start the swagger documenation, just run the project normally and then open http://localhost:5000/docs
 
-![Swagger Documentation](./public/image.png)
+![Swagger Documentation](./public/swagger.png)
+
+## Postman Collection
+
+A postman data file has also been added to the project, which can be used to quickly generate the postman environment and collections by just simply importing it to your postman application. Unzip the postman-data.zip to get the postman data.
+
+![Postman Collection](./public/postman.png)
