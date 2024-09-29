@@ -15,6 +15,7 @@ These defaults can easily be replaced with your preferred database like MongoDB 
 2. [Environment Variables](#environment-variables)
 3. [Initiate Prisma](#initiate-prisma)
 4. [API Routes](#api-routes)
+5. [Swagger Documentation](#swagger-documentation)
 
 ## Default Docker Compose
 
@@ -71,3 +72,9 @@ npx prisma db seed
 | /auth/login    | Logs in the user by returning an access token and a refresh token. By default, the access token will expire after 24 hours and the refresh token will expire after 1 week. |
 | /auth/refresh  | Creates a new access token to replace an expired token using the validity of the refresh token.                                                                            |
 | /users/me      | Gets the logged in user information using the access token.                                                                                                                |
+
+## Swagger Documentation
+
+The repository includes the openapi swagger documentation for all the available routes, this can be a good starting point for adding more documentation whenever a new route is added. To start the swagger documenation, just run the project normally and then open http://localhost:5000/docs
+
+![Swagger Documentation](./public/image.png)
