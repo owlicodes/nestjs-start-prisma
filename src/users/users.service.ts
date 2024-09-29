@@ -24,7 +24,13 @@ export class UsersService {
     };
   }
 
-  async getUserByEmail(email: string) {
-    return this.usersRepository.getUserByEmail(email);
+  async getUserByEmail(email: string, includePassword = false) {
+    const user = await this.usersRepository.getUserByEmail(email);
+
+    if (!includePassword) {
+      delete user.password;
+    }
+
+    return user;
   }
 }

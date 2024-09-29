@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   async login(data: LoginUserDto) {
-    const user = await this.usersService.getUserByEmail(data.email);
+    const user = await this.usersService.getUserByEmail(data.email, true);
     if (!user) throw new BadRequestException("User does not exists.");
 
     const passwordsMatched = await compare(data.password, user.password);
