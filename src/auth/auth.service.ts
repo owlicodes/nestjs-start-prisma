@@ -5,9 +5,13 @@ import { compare } from "bcrypt";
 import { RegisterUserDto } from "./dtos/register-user.dto";
 import { UsersService } from "src/users/users.service";
 import { LoginUserDto } from "./dtos/login-user.dto";
+import { UserPayload } from "src/shared/types";
 
 @Injectable()
 export class AuthService {
+  private readonly ACCESS_TOKEN_EXPIRES_IN = "24h";
+  private readonly REFRESH_TOKEN_EXPIRES_IN = "7d";
+
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
@@ -32,16 +36,28 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email };
     const accessToken = await this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_SECRET,
-      expiresIn: "24h",
+      expiresIn: this.ACCESS_TOKEN_EXPIRES_IN,
     });
     const refreshToken = await this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: "7d",
+      expiresIn: this.REFRESH_TOKEN_EXPIRES_IN,
     });
 
     return {
       accessToken,
       refreshToken,
+    };
+  }
+
+  async refresh(data: UserPayload) {
+    const payload = { sub: data.user.sub, email: data.user.email };
+    const accessToken = await this.jwtService.sign(payload, {
+      secret: process.env.JWT_ACCESS_SECRET,
+      expiresIn: this.ACCESS_TOKEN_EXPIRES_IN,
+    });
+
+    return {
+      accessToken,
     };
   }
 }

@@ -69,3 +69,4 @@ npx prisma db seed
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | /auth/register | Register a new user by creating the record in the database.                                                                                                                |
 | /auth/login    | Logs in the user by returning an access token and a refresh token. By default, the access token will expire after 24 hours and the refresh token will expire after 1 week. |
+| /auth/refresh  | Creates a new access token to replace an expired token using the validity of the refresh token.                                                                            |
