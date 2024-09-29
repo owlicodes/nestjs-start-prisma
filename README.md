@@ -15,8 +15,9 @@ These defaults can easily be replaced with your preferred database like MongoDB 
 2. [Environment Variables](#environment-variables)
 3. [Initiate Prisma](#initiate-prisma)
 4. [API Routes](#api-routes)
-5. [Swagger Documentation](#swagger-documentation)
-6. [Postman Collection](#postman-collection)
+5. [Rate Limiting](#rate-limiting)
+6. [Swagger Documentation](#swagger-documentation)
+7. [Postman Collection](#postman-collection)
 
 ## Default Docker Compose
 
@@ -39,6 +40,8 @@ JWT_ACCESS_SECRET="jwtAccessSecret"
 JWT_ACCESS_EXPIRY="24h"
 JWT_REFRESH_SECRET="jwtRefreshSecret"
 JWT_REFRESH_EXPIRY="7d"
+RATE_LIMIT_TTL=3600
+RATE_LIMIT=100
 ```
 
 Below is the equivalent zod object schema defined in config.ts.
@@ -51,6 +54,8 @@ export const envSchema = z.object({
   JWT_ACCESS_EXPIRY: z.string(),
   JWT_REFRESH_SECRET: z.string(),
   JWT_REFRESH_EXPIRY: z.string(),
+  RATE_LIMIT_TTL: z.coerce.number(),
+  RATE_LIMIT: z.coerce.number(),
 });
 ```
 
@@ -88,6 +93,12 @@ npx prisma db seed
 | /auth/login    | Logs in the user by returning an access token and a refresh token. By default, the access token will expire after 24 hours and the refresh token will expire after 1 week. |
 | /auth/refresh  | Creates a new access token to replace an expired token using the validity of the refresh token.                                                                            |
 | /users/me      | Gets the logged in user information using the access token.                                                                                                                |
+
+## Rate Limiting
+
+By default, a rate limiter is implemented in this project using @nestjs/throttler, it is best practice to implement rate limiter early on to avoid DOS attacks or BOT attacks. You can set the Time To Live and the Rate Limit generously in the .env file.
+
+The rate limiting strategy implemented here is a basic Fixed Window implementation. You can easily implement a different strategy like Token Bucket if you want to using [rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible) with a combination of [redis](https://redis.io/).
 
 ## Swagger Documentation
 

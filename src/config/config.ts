@@ -7,6 +7,8 @@ export const envSchema = z.object({
   JWT_ACCESS_EXPIRY: z.string(),
   JWT_REFRESH_SECRET: z.string(),
   JWT_REFRESH_EXPIRY: z.string(),
+  RATE_LIMIT_TTL: z.coerce.number(),
+  RATE_LIMIT: z.coerce.number(),
 });
 
 export type EnvironmentVariables = z.infer<typeof envSchema>;

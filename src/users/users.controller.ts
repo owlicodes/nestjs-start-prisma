@@ -5,6 +5,7 @@ import {
   ApiResponse,
   ApiTags,
 } from "@nestjs/swagger";
+import { ThrottlerGuard } from "@nestjs/throttler";
 
 import { UsersService } from "./users.service";
 import { AuthGuard } from "src/auth/guards/auth.guard";
@@ -16,6 +17,7 @@ import { UserPayload } from "src/shared/types";
   version: "1",
 })
 @UseGuards(AuthGuard)
+@UseGuards(ThrottlerGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
