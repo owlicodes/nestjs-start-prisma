@@ -27,7 +27,6 @@ export class UsersService {
   async getUserByEmail(email: string, includePassword = false) {
     const user = await this.usersRepository.getUserByEmail(email);
 
-    console.log("joms includePassword:", includePassword);
     if (user && !includePassword) {
       delete user.password;
     }
