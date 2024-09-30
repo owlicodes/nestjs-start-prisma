@@ -10,7 +10,7 @@ import { AuthService } from "./auth.service";
 import { RegisterUserDto } from "./dtos/register-user.dto";
 import { LoginUserDto } from "./dtos/login-user.dto";
 import { RefreshGuard } from "./guards/refresh.guard";
-import { UserPayload } from "src/shared/types";
+import { UserPayload } from "../shared/types";
 
 @ApiTags("auth")
 @Controller({
