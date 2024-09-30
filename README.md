@@ -16,8 +16,9 @@ These defaults can easily be replaced with your preferred database like MongoDB 
 3. [Initiate Prisma](#initiate-prisma)
 4. [API Routes](#api-routes)
 5. [Rate Limiting](#rate-limiting)
-6. [Swagger Documentation](#swagger-documentation)
-7. [Postman Collection](#postman-collection)
+6. [Unit Tests](#unit-tests)
+7. [Swagger Documentation](#swagger-documentation)
+8. [Postman Collection](#postman-collection)
 
 ## Default Docker Compose
 
@@ -99,6 +100,12 @@ npx prisma db seed
 By default, a rate limiter is implemented in this project using @nestjs/throttler, it is best practice to implement rate limiter early on to avoid DOS attacks or BOT attacks. You can set the Time To Live and the Rate Limit generously in the .env file.
 
 The rate limiting strategy implemented here is a basic Fixed Window implementation. You can easily implement a different strategy like Token Bucket if you want to using [rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible) with a combination of [redis](https://redis.io/).
+
+## Unit Tests
+
+All available routes are unit tested, which can server as good reference when adding new routes. Test coverages are not 100%, but all important classes are 100% tested, for example AuthController, AuthService, UserController and UserService which contains the main logic for all the available routes.
+
+![Unit Test Result](./public/unit-test.png)
 
 ## Swagger Documentation
 
