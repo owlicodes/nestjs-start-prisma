@@ -10,32 +10,13 @@ import { AppConfigService } from "../config/config.service";
 
 @Injectable()
 export class AuthService {
-  private readonly ACCESS_TOKEN_EXPIRES_IN = "24h";
-  private readonly REFRESH_TOKEN_EXPIRES_IN = "7d";
-
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly appConfigService: AppConfigService,
   ) {}
 
-  async register(data: RegisterUserDto) {
-    await this.usersService.createUser(data);
-
-    return {
-      message: "User registered.",
-    };
-  }
-
-  async login(data: LoginUserDto) {
-    const user = await this.usersService.getUserByEmail(data.email, true);
-    if (!user) throw new BadRequestException("User does not exists.");
-
-    const passwordsMatched = await compare(data.password, user.password);
-    if (!passwordsMatched)
-      throw new BadRequestException("Invalid credentials.");
-
-    const payload = { sub: user.id, email: user.email };
+  private async generateTokens(payload) {
     const accessToken = await this.jwtService.sign(payload, {
       secret: this.appConfigService.getJwtAccessSecret(),
       expiresIn: this.appConfigService.getJwtAccessExpiry(),
@@ -48,6 +29,37 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
+    };
+  }
+
+  async register(data: RegisterUserDto) {
+    const response = await this.usersService.createUser(data);
+
+    const payload = { sub: response.user.id, email: response.user.email };
+    const tokens = await this.generateTokens(payload);
+
+    return {
+      user: response.user,
+      tokens,
+    };
+  }
+
+  async login(data: LoginUserDto) {
+    const user = await this.usersService.getUserByEmail(data.email, true);
+    if (!user) throw new BadRequestException("User does not exists.");
+
+    const passwordsMatched = await compare(data.password, user.password);
+    if (!passwordsMatched)
+      throw new BadRequestException("Invalid credentials.");
+
+    const payload = { sub: user.id, email: user.email };
+    const tokens = await this.generateTokens(payload);
+
+    delete user.password;
+
+    return {
+      user,
+      tokens,
     };
   }
 

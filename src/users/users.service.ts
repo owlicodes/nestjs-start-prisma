@@ -9,17 +9,20 @@ export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async createUser(data: CreateUserDto) {
-    const user = await this.getUserByEmail(data.email);
+    let user = await this.getUserByEmail(data.email);
 
     if (user) throw new BadRequestException("User already exists.");
 
     const hashedPassword = await hash(data.password, 10);
-    await this.usersRepository.createUser({
+    user = await this.usersRepository.createUser({
       email: data.email,
       password: hashedPassword,
     });
 
+    delete user.password;
+
     return {
+      user,
       message: "User created.",
     };
   }

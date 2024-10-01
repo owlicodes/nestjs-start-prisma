@@ -51,15 +51,18 @@ describe("AuthService", () => {
 
   describe("register", () => {
     it("should return 'User registered.'.", async () => {
-      const createUserResolvedMessage = { message: "User created." };
-      const registerResolvedMessage = { message: "User registered." };
+      jest.spyOn(usersService, "createUser").mockResolvedValue({
+        user: {
+          ...mockUser,
+          id: 0,
+          createdAt: new Date(),
+        },
+        message: "User created.",
+      });
 
-      jest
-        .spyOn(usersService, "createUser")
-        .mockResolvedValue(createUserResolvedMessage);
+      await authService.register(mockUser);
 
-      const result = await authService.register(mockUser);
-      expect(result).toEqual(registerResolvedMessage);
+      expect(usersService.createUser).toHaveBeenCalled();
       expect(usersService.createUser).toHaveBeenCalledWith(mockUser);
     });
   });

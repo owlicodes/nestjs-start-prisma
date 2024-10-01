@@ -1,8 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
 
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
+import { AppConfigService } from "../config/config.service";
 
 describe("UsersController", () => {
   let usersController: UsersController;
@@ -26,6 +28,8 @@ describe("UsersController", () => {
       controllers: [UsersController],
       providers: [
         JwtService,
+        ConfigService,
+        AppConfigService,
         {
           provide: UsersService,
           useValue: {

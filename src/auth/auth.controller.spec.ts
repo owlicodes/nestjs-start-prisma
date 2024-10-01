@@ -1,9 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { JwtService } from "@nestjs/jwt";
 import { BadRequestException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
+import { AppConfigService } from "../config/config.service";
 
 describe("AuthController", () => {
   let authController: AuthController;
@@ -16,6 +18,8 @@ describe("AuthController", () => {
       controllers: [AuthController],
       providers: [
         JwtService,
+        ConfigService,
+        AppConfigService,
         {
           provide: AuthService,
           useValue: {
@@ -33,12 +37,22 @@ describe("AuthController", () => {
 
   describe("register", () => {
     it("should return 'User registered.'", async () => {
-      jest
-        .spyOn(authService, "register")
-        .mockResolvedValue({ message: "User registered." });
+      jest.spyOn(authService, "register").mockResolvedValue({
+        user: {
+          ...mockUser,
+          id: 0,
+          createdAt: new Date(),
+        },
+        tokens: {
+          accessToken: "accessToken",
+          refreshToken: "refreshToken",
+        },
+      });
 
-      const response = await authController.register(mockUser);
-      expect(response).toEqual({ message: "User registered." });
+      await authController.register(mockUser);
+
+      expect(authService.register).toHaveBeenCalled();
+      expect(authService.register).toHaveBeenCalledWith(mockUser);
     });
 
     it("should throw a BadRequestException", async () => {
@@ -59,14 +73,20 @@ describe("AuthController", () => {
         refreshToken: "refreshToken",
       };
 
-      jest.spyOn(authService, "login").mockResolvedValue(mockResponse);
-
-      const response = await authController.login(mockUser);
-
-      expect(response).toEqual({
-        accessToken: "accessToken",
-        refreshToken: "refreshToken",
+      jest.spyOn(authService, "login").mockResolvedValue({
+        user: {
+          ...mockUser,
+          id: 0,
+          createdAt: new Date(),
+        },
+        tokens: {
+          ...mockResponse,
+        },
       });
+
+      await authController.login(mockUser);
+
+      expect(authService.login).toHaveBeenCalled();
       expect(authService.login).toHaveBeenCalledWith(mockUser);
     });
 

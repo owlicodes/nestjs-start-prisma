@@ -45,7 +45,8 @@ describe("UsersService", () => {
 
       const response = await usersService.createUser(createUserData);
 
-      expect(response).toEqual({ message: "User created." });
+      expect(response.message).toEqual("User created.");
+      expect(response.user.email).toEqual(mockUser.email);
       expect(usersRepository.createUser).toHaveBeenCalled();
     });
 

@@ -7,9 +7,14 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 
+import { AppConfigService } from "../../config/config.service";
+
 @Injectable()
 export class RefreshGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly appConfigService: AppConfigService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -23,7 +28,7 @@ export class RefreshGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_REFRESH_SECRET,
+        secret: this.appConfigService.getJwtRefreshSecret(),
       });
 
       request["user"] = payload;
