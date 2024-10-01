@@ -56,7 +56,7 @@ describe("UsersController", () => {
 
       const response = await usersController.getLoggedInUser(userPayload);
 
-      expect(response).toBeNull();
+      expect(response.data).toBeNull();
       expect(usersService.getUserByEmail).toHaveBeenCalledWith(mockUser.email);
     });
   });
