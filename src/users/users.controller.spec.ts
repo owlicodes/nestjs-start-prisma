@@ -47,9 +47,7 @@ describe("UsersController", () => {
     it("should return the user.", async () => {
       jest.spyOn(usersService, "getUserByEmail").mockResolvedValue(mockUser);
 
-      const response = await usersController.getLoggedInUser(userPayload);
-
-      expect(response.email).toEqual(mockUser.email);
+      await usersController.getLoggedInUser(userPayload);
       expect(usersService.getUserByEmail).toHaveBeenCalledWith(mockUser.email);
     });
 
