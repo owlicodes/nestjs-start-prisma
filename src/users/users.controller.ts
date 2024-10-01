@@ -32,17 +32,11 @@ export class UsersController {
     status: 401,
     description: "Unauthorized, a valid token is missing or expired.",
   })
-  async getLoggedInUser(@Request() req: UserPayload) {
+  getLoggedInUser(@Request() req: UserPayload) {
     if (!req.user) {
-      return {
-        data: null,
-      };
+      return null;
     } else {
-      const data = await this.usersService.getUserByEmail(req.user.email);
-
-      return {
-        data,
-      };
+      return this.usersService.getUserByEmail(req.user.email);
     }
   }
 }
